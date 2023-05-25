@@ -6,7 +6,7 @@ import { Story } from './page/Story';
 import { About } from './page/About';
 import { LookBook } from './page/LookBook';
 
-export const App:FC = () => {
+export const App: FC = () => {
   return (
     <div className="App">
       <Nav />

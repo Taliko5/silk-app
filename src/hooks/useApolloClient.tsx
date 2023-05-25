@@ -1,9 +1,4 @@
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  gql,
-} from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache, gql } from '@apollo/client';
 import { ReactNode, createContext, useEffect, useState } from 'react';
 
 export const client = new ApolloClient({
@@ -89,9 +84,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <ApolloProvider client={client}>
-      <GraphQLContext.Provider value={tidiedData}>
-        {children}
-      </GraphQLContext.Provider>
+      <GraphQLContext.Provider value={tidiedData}>{children}</GraphQLContext.Provider>
     </ApolloProvider>
   );
 };
