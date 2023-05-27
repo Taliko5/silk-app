@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Home } from './page/Home';
-import { Nav } from './components/Nav';
+import { Nav } from './components/Nav/Nav';
 import { Story } from './page/Story';
 import { About } from './page/About';
 import { LookBook } from './page/LookBook';
