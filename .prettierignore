@@ -1,3 +1,6 @@
 silk-strapi/
 node_modules/
 public/
+webpack.config.js
+dist/
+

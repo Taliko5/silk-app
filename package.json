@@ -27,7 +27,7 @@
   },
   "scripts": {
     "serve": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "webpack",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,html,yml}\" \"!**/dist/**\"",
@@ -62,6 +62,10 @@
     "@typescript-eslint/eslint-plugin": "^5.59.7",
     "@typescript-eslint/parser": "^5.59.7",
     "eslint": "^8.41.0",
-    "prettier": "2.8.8"
+    "graphql-tag": "^2.12.6",
+    "prettier": "2.8.8",
+    "ts-loader": "^9.4.3",
+    "html-webpack-plugin": "^5.5.1",
+    "webpack-cli": "^5.1.1"
   }
 }
