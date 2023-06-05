@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { StyledLogo, StyledNav } from '../Nav.style';
+import { StyledLogo, StyledNav } from './Nav.style';
 
 export const Nav: FC = () => {
   return (
