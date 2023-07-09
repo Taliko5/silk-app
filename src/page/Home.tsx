@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
-import { Stage } from '../components/Stage/Stage';
+import { Slider } from '../components/Slider/Slider';
 import { demoImageList } from '../static/demo-image-list';
+import { Stage } from '../components/Stage/Stage';
 
 export const Home: FC = () => {
   return (
     <>
       <div>homepage</div>
-      <Stage imageList={demoImageList} height="800px" />
+      <Stage height="500px" imageList={demoImageList} fadeDuration={3000} />
     </>
   );
 };

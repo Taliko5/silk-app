@@ -17,5 +17,5 @@
     "strict": true,
     "target": "ES2022"
   },
-  "include": ["src", "emotion.d.ts"],
+  "include": ["src", "src/emotion.d.ts", "src/static/demo-image-list.tsx", "src/assets"],
 }
