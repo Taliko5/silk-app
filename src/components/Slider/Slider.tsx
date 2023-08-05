@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { SliderInner, SliderWrapper } from './Slider.style';
 import { SliderItem } from '../SliderItem/SliderItem';
 
@@ -8,14 +8,20 @@ export interface SliderProps {
   interval?: number;
   fadeDuration?: number;
   itemNumber?: number;
+  gap: string;
 }
-
 export type Image = {
   url: string;
   title: string;
 };
 
-export const Slider: FC<SliderProps> = ({ imageList, height, itemNumber, interval }) => {
+export const Slider: FC<SliderProps & PropsWithChildren> = ({
+  imageList,
+  height,
+  itemNumber,
+  interval,
+  gap = '30px',
+}) => {
   if (!imageList) throw new Error('no iamage');
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -45,6 +51,7 @@ export const Slider: FC<SliderProps> = ({ imageList, height, itemNumber, interva
           {imageList.map((image, index) => {
             return (
               <SliderItem
+                gap={gap}
                 key={index + image.title}
                 shwowItem={activeIndex === index}
                 index={index}

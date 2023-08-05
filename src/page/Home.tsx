@@ -7,7 +7,8 @@ export const Home: FC = () => {
   return (
     <>
       <div>homepage</div>
-      <Stage height="500px" imageList={demoImageList} fadeDuration={3000} />
+      <Stage height="500px" imageList={demoImageList} fadeDuration={1000} interval={5000} />
+      <Slider imageList={demoImageList} height="300px" gap="20px" />
     </>
   );
 };

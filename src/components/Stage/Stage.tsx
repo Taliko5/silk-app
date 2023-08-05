@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { StageWrapper } from './Stage.style';
-import { log } from 'console';
+import { useTimedIndex } from '../../hooks/useTimedEnumeration';
 
 export interface StageProps {
   imageList: Image[];
@@ -8,6 +8,7 @@ export interface StageProps {
   interval?: number;
   fadeDuration?: number;
   itemNumber?: number;
+  imagePosition?: string;
 }
 
 export type Image = {
@@ -19,26 +20,31 @@ export const Stage: FC<StageProps> = ({ ...stageProps }) => {
   const stageRef = useRef<HTMLDivElement | null>(null);
   const previousRef = useRef<HTMLElement | null>(null);
 
-  const { height, imageList, fadeDuration = 250 } = stageProps;
-  const [count, setCount] = useState<number>(0);
+  const { height, imageList, fadeDuration, interval = 5000, imagePosition = '0% 40%' } = stageProps;
+
+  const commingIndex = useTimedIndex(interval, imageList.length - 1);
+  const commingImage = useMemo(() => imageList[commingIndex], [commingIndex, imageList]);
 
   useEffect(() => {
+    console.log(commingImage, 'commingImage');
     const { current: stage } = stageRef;
+    if (!stage) return;
     const { current: previous } = previousRef;
 
     const fade = async (current: HTMLElement | null) => {
       const animation = await (async () => {
         try {
           if (previous) {
-            return previous.animate([{ opacity: 0 }, { opacity: 1 }], {
-              duration: current ? 10000 : fadeDuration,
+            console.log('previous');
+            return previous.animate([{ opacity: 1 }, { opacity: 0 }], {
+              duration: fadeDuration,
               fill: 'forwards',
             }).finished;
           }
-
           if (current) {
+            console.log('current');
             return current.animate([{ opacity: 0 }, { opacity: 1 }], {
-              duration: previous ? 10000 : fadeDuration,
+              duration: fadeDuration,
               fill: 'forwards',
             }).finished;
           }
@@ -62,66 +68,55 @@ export const Stage: FC<StageProps> = ({ ...stageProps }) => {
       previousRef.current = current;
     };
 
-    const imageArr = () => {
-      const firstImg = imageList[count];
+    const image = commingImage ? new Image() : null;
 
-      if (count < imageList.length) {
-        console.log(count, 'count');
-        setCount(count + 1);
-        console.log(count, 'count2');
-      }
-      if (count >= imageList.length) {
-        setCount(0);
-        console.log(count, 'count3');
-      }
-
-      const image = new Image();
-
+    if (image && commingImage) {
       image.crossOrigin = 'use-credentials';
-      image.src = firstImg.url;
-      image.alt = firstImg.title;
-      image.style.cssText = 'height: 100%; width: 100%; object-fit: cover;';
+      image.style.cssText = `--height: ${height};
+                             --imagePosiion: ${imagePosition};
+                             height: var(--height);
+                             width: 100%; object-fit:
+                             cover; grid-area:abc;
+                             object-position: var(--imagePosiion);`;
+
+      image.src = commingImage.url;
 
       image.onload = async () => {
-        await image.decode();
-        stage?.prepend(image);
+        await image.decode?.();
+
+        stage.prepend(image);
+
         fade(image);
       };
 
       image.onerror = () => {
         fade(null);
       };
+    } else {
+      fade(null);
+    }
 
-      return firstImg;
-    };
+    for (const child of Array.from(stage.childNodes)) {
+      if (image && child === image) continue;
+      if (previous && child === previous) continue;
 
-    // imageList
-    //   ? imageList.map((imageObj, index) => {
-    //       const image = new Image();
+      if (child instanceof HTMLImageElement) {
+        const { src } = child;
+        if (!src.length) return;
 
-    //       image.crossOrigin = 'use-credentials';
-    //       image.src = imageObj.url;
-    //       image.alt = imageObj.title;
-    //       image.style.cssText = 'height: 100%; width: 100%; object-fit: cover;';
+        URL.revokeObjectURL(src);
+      }
 
-    //       image.onload = async () => {
-    //         await image.decode();
-    //         stage?.prepend(image);
-    //         fade(image);
-    //       };
-
-    //       image.onerror = () => {
-    //         fade(null);
-    //       };
-
-    //       //some second happends
-    //     })
-    imageList ? setInterval(imageArr, 5000) : fade(null);
-  }, [count]);
+      child.remove();
+    }
+  }, [commingImage, fadeDuration]);
 
   return (
     <>
-      <StageWrapper ref={stageRef} height={height}></StageWrapper>
+      <StageWrapper ref={stageRef} height={height}>
+        {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain */}
+        <img src={imageList.at(-1)?.url!} />
+      </StageWrapper>
     </>
   );
 };
