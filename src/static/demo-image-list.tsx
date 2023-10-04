@@ -8,37 +8,26 @@ export const demoImageList: Image[] = [
   {
     url: image0,
     title: 'image 1',
+    id: 1,
   },
   {
     url: image1,
     title: 'image 2',
+    id: 2,
   },
   {
     url: image2,
     title: 'image 3',
+    id: 3,
   },
   {
     url: image0,
     title: 'image 4',
+    id: 4,
   },
   {
     url: image1,
     title: 'image 5',
-  },
-  {
-    url: image2,
-    title: 'image 6',
-  },
-  {
-    url: image0,
-    title: 'image 7',
-  },
-  {
-    url: image1,
-    title: 'image 8',
-  },
-  {
-    url: image2,
-    title: 'image 9',
+    id: 5,
   },
 ];
