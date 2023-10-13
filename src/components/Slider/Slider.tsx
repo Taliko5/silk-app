@@ -58,24 +58,12 @@ export const Slider: FC<SliderProps & PropsWithChildren> = ({
       setActiveIndex(next);
       goToNextSlide(activeIndex);
     }, interval);
+
     // スライドが一こ左に行くたび,同じindexを追加
+    imageList.push(imageList[activeIndex]);
+
     return () => clearTimeout(id);
   }, [activeIndex]);
-
-  // useEffect(() => {
-  //   if (!container) return;
-  //   const containerRight = container.offsetLeft + container.offsetWidth;
-
-  //   const newImageList = [imageList[imageList.length - 1], ...imageList];
-  //   console.log(newImageList, 'newImageList');
-  //   const listWidth = (itemWidth + gap) * imageList.length;
-  //   const containerWidth = window['innerWidth'];
-  //   console.log(listWidth, ':listWidth', containerWidth, ':containerWidth');
-
-  //   const isListEnoghLength = listWidth / containerWidth >= 1.5;
-  //   const additionalImageNumber = (1.5 * containerWidth - listWidth) / itemWidth;
-  //   return isListEnoghLength ? setImageArray(newImageList) : addImage(additionalImageNumber);
-  // }, []);
 
   const addImage = useCallback(
     (indexNumber: number) => {
@@ -114,11 +102,8 @@ export const Slider: FC<SliderProps & PropsWithChildren> = ({
     [container]
   );
 
-  // const changeIndex = useCallback(() => {
-  //   setActiveIndex(activeIndex + 1);
-  //   setStageWidth(changeStageItem());
-  // }, [activeIndex]);
   console.log(imageArray, 'imageArray');
+
   return (
     <>
       <SliderWrapper height={height} interval={3000}>
@@ -136,7 +121,7 @@ export const Slider: FC<SliderProps & PropsWithChildren> = ({
                   alt={image.title}
                   srcSet={image.url}
                   itemNum={itemNumber}
-                  onClick={() => console.log(activeIndex === index)}
+                  onClick={() => console.log('hi')}
                 />
                 {image.id}
               </>
