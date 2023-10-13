@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef } from 'react';
+import { FC, useEffect, useMemo, useRef } from 'react';
 import { StageWrapper } from './Stage.style';
 import { useTimedIndex } from '../../hooks/useTimedEnumeration';
 

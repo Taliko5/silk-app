@@ -1,4 +1,4 @@
-import { Image } from '../components/Slider/Slider';
+import { Image } from '../components/Utils';
 
 import image0 from '../assets/image0.jpg';
 import image1 from '../assets/image1.jpg';

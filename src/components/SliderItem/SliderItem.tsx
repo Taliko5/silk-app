@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ExampleTile, SliderImg, SliderItemWrapper, SliderPicture, SliderSource } from './SliderItem.style';
 
 export interface SliderItemProps {

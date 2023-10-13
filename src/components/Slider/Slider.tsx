@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
 import { SliderInner, SliderWrapper } from './Slider.style';
 import { SliderItem } from '../SliderItem/SliderItem';
+import { Image } from '../Utils';
 
 export interface SliderProps {
   imageList: Image[];
@@ -11,11 +12,6 @@ export interface SliderProps {
   itemWidth: number;
   gap: number;
 }
-export type Image = {
-  url: string;
-  title: string;
-  id: number;
-};
 
 export const Slider: FC<SliderProps & PropsWithChildren> = ({
   imageList,
@@ -33,6 +29,7 @@ export const Slider: FC<SliderProps & PropsWithChildren> = ({
   const [stageWidth, setStageWidth] = useState<number>(0);
   const [imageArray, setImageArray] = useState<Image[] | null>(null);
   const [lastImageId, setLastImageId] = useState<number>(0);
+  const [isAnimationActive, setAnimationActive] = useState(true);
 
   // const changeStageItem = useCallback(() => {
   //   return Number(((100 / imageList.length) * -activeIndex).toFixed(2));
@@ -47,22 +44,31 @@ export const Slider: FC<SliderProps & PropsWithChildren> = ({
     const containerWidth = window['innerWidth'];
     console.log(listWidth, ':listWidth', containerWidth, ':containerWidth');
 
-    const isListEnoghLength = listWidth / containerWidth >= 1.5;
+    const isListEnoghLength = listWidth / containerWidth >= 1.2;
     const additionalImageNumber = (1.5 * containerWidth - listWidth) / itemWidth;
     return isListEnoghLength ? setImageArray(newImageList) : addImage(additionalImageNumber);
   }, []);
 
   useEffect(() => {
     const next = (activeIndex + 1) % imageList.length;
-    const id = setTimeout(() => {
-      setActiveIndex(next);
-      goToNextSlide(activeIndex);
-    }, interval);
 
+    const id = isAnimationActive
+      ? setTimeout(() => {
+          setActiveIndex(next);
+
+          goToNextSlide(activeIndex);
+        }, interval)
+      : null;
+    // add setAnimation: boolean -> mouseenter, pointerdown
     // スライドが一こ左に行くたび,同じindexを追加
+    // index pop
+    imageList.splice(0, 1);
+
     imageList.push(imageList[activeIndex]);
 
-    return () => clearTimeout(id);
+    return () => {
+      id && clearTimeout(id);
+    };
   }, [activeIndex]);
 
   const addImage = useCallback(
@@ -101,6 +107,9 @@ export const Slider: FC<SliderProps & PropsWithChildren> = ({
     },
     [container]
   );
+
+  // on hover-> stop scrolling
+  // on click => jump to next url
 
   console.log(imageArray, 'imageArray');
 
